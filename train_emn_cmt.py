@@ -8,8 +8,8 @@ from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-train_data=pd.read_csv(r"C:\Users\shiva\Downloads\emtoion_from_comments\train.csv")
-test_data=pd.read_csv(r"C:\Users\shiva\Downloads\emtoion_from_comments\test.csv")
+train_data=pd.read_csv(r"path_of_training_dataset")
+test_data=pd.read_csv(r"path_of_testing_dataset")
 
 
 train_data=pd.DataFrame(train_data)
@@ -28,7 +28,7 @@ tokenizer=Tokenizer(oov_token='OOV')
 tokenizer.fit_on_texts(train_sentences)
 word_indices=tokenizer.word_index
 
-
+#saving the tokenizer to use the same kind of tokenisation while prediction
 with open('tokenizer.pickle', 'wb') as handle:
     pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
@@ -85,10 +85,11 @@ test_loss, test_accuracy = model.evaluate(paded_test_sequences, test_labels)
 print(f'Test accuracy: {test_accuracy}')
 
 
+#saving the trained data into a file
 model.save('text_base.keras', overwrite=True)
 
 
-
+#ploting the training history
 plt.plot(history.history['accuracy'], label='Train Accuracy')
 plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
 plt.xlabel('Epochs')
